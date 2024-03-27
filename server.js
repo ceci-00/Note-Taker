@@ -24,3 +24,10 @@ app.post('/api/notes', (req, res) => {
     // find way to give each note unique id when it's saved (an npm pkg can do this)
 })
 
+//DELETE /api/notes/:id received query parameter containing id of note to delete
+app.delete('/api/notes/:id', (req, res) => {
+    res.send('Got a DELETE request')
+    //read all notes from db.json file
+    // remove note w/given id property
+    // rewrite notes to db.json
+})
