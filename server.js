@@ -43,12 +43,15 @@ app.post('/api/notes', (req, res) => {
 
 //DELETE /api/notes/:id received query parameter containing id of note to delete
 app.delete('/api/notes/:id', (req, res) => {
-    res.send('Got a DELETE request')
-    //read all notes from db.json file
-    // remove note w/given id property
-    // rewrite notes to db.json
+    const deleteID = req.params.id;
+    //filter out the note with the id to delete
+    dbData = dbData.filter(note => note.id !== deleteID);
+    //write the filtered notes to db.json
+    fs.writeFile('./db/db.json', JSON.stringify(dbData), (err) => {
+        if (err) throw err;
+        res.json({ msg: "Note deleted" });
+    });
 })
-
 
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`)
