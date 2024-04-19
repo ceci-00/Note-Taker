@@ -8,16 +8,21 @@ const dbData = require('./db/db.json');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//middleware to parse incoming request data
+//middleware to parse incoming request data and serve static files
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static('public'));
 
-//html routes
+// GET / returns index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, "public/index.html"))
+})
+// GET /notes returns notes.html
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "public/notes.html"))
 })
+
 // get * should return index.html
 // app.get()
 
