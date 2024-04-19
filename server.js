@@ -16,13 +16,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // GET * returns index.html
-app.get('*', (req, res) => {
+app.get('/', (req, res) =>
     res.sendFile(path.join(__dirname, "public/index.html"))
-});
+);
 // GET /notes returns notes.html
-app.get('/notes', (req, res) => {
+app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, "public/notes.html"))
-});
+);
 
 //api get route to fetch notes from db.json
 app.get('/api/notes', (req, res) => res.json(dbData));
@@ -63,6 +63,6 @@ app.delete('/api/notes/:id', (req, res) => {
 
 // listens on port 3000
 app.listen(PORT, () => {
-    console.log(`App is listening on port ${PORT}`)
+    console.log(`App is listening at http://localhost:${PORT}`)
 })
 
