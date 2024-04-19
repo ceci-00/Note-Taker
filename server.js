@@ -10,19 +10,19 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 //middleware to parse incoming request data and serve static files
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
 // GET * returns index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "public/index.html"))
-})
+});
 // GET /notes returns notes.html
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "public/notes.html"))
-})
+});
 
 //api get route to fetch notes from db.json
 app.get('/api/notes', (req, res) => res.json(dbData));
@@ -36,8 +36,11 @@ app.post('/api/notes', (req, res) => {
     dbData.push(newNote);
     // writes the new note to db.json file
     fs.writeFile('./db/db.json', JSON.stringify(dbData), (err) => {
-        if (err) throw err;
-        res.json(newNote);
+        if (err) {
+            res.status(500).send('Failed to write to the database');
+        } else {
+            res.json(newNote);
+        }
     });
 });
 
