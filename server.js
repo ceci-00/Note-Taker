@@ -1,8 +1,9 @@
-// imports express, path, fs, and db.json
+// imports express, path, fs, db.json, and uuid
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const dbData = require('./db/db.json');
+const uuid = require('uuid');
 
 // creates a server that listens on port 3000
 const app = express();
@@ -28,12 +29,17 @@ app.get('/api/notes', (req, res) => res.json(dbData));
 
 // post '/api/notes' receives new note to save on request body
 app.post('/api/notes', (req, res) => {
-    res.send('Got a POST request')
-    // adds it to db.json file
-     fs.appendFile('db.json', )
-    // returns the new note to client
-    // find way to give each note unique id when it's saved (an npm pkg can do this)
-})
+    const newNote = req.body;
+    // assigns a unique id to the new note
+    newNote.id = uuid.v4();
+    // adds the new note to the dbData array
+    dbData.push(newNote);
+    // writes the new note to db.json file
+    fs.writeFile('./db/db.json', JSON.stringify(dbData), (err) => {
+        if (err) throw err;
+        res.json(newNote);
+    });
+});
 
 //DELETE /api/notes/:id received query parameter containing id of note to delete
 app.delete('/api/notes/:id', (req, res) => {
