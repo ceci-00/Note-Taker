@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
-// GET / returns index.html
+// GET * returns index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "public/index.html"))
 })
@@ -24,27 +24,7 @@ app.get('/notes', (req, res) => {
 })
 
 //api get route to fetch notes from db.json
-app.get('/api/notes', (req, res) => {
-//read db.json file
-fs.readFile(dbData, 'utf8', (error, data) => {
-    if (error) {
-        console.error('Error reading db.json:', error);
-        res.status(500).json({ error: 'Failed to read data from database' });
-        return;
-    }
-
-    try {
-        res.json(JSON.parse(data));
-    } catch (parseError) {
-        console.error('Error parsing JSON:', parseError);
-        res.status(500).json({ error: 'Failed to parse data from the database' });
-    }
-});
-});
-// req._read(db.json)
-// return all saved notes as json
-readFromFile('./db/tips.json').then((dbData) => res.json(JSON.parse(dbData)));
-});
+app.get('/api/notes', (req, res) => res.json(dbData));
 
 // post '/api/notes' receives new note to save on request body
 app.post('/api/notes', (req, res) => {
