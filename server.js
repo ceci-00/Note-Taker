@@ -15,16 +15,13 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // GET / returns index.html
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "public/index.html"))
 })
 // GET /notes returns notes.html
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "public/notes.html"))
 })
-
-// get * should return index.html
-// app.get()
 
 //api get route to fetch notes from db.json
 app.get('/api/notes', (req, res) => {
