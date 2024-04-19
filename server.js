@@ -36,6 +36,7 @@ app.post('/api/notes', (req, res) => {
     dbData.push(newNote);
     // writes the new note to db.json file
     fs.writeFile('./db/db.json', JSON.stringify(dbData), (err) => {
+        // error handling
         if (err) {
             res.status(500).send('Failed to write to the database');
         } else {
@@ -51,6 +52,7 @@ app.delete('/api/notes/:id', (req, res) => {
     dbData = dbData.filter(note => note.id !== deleteID);
     // Write the filtered notes to db.json
     fs.writeFile('./db/db.json', JSON.stringify(dbData), (err) => {
+        // error handling
         if (err) {
             res.status(500).send('Failed to write to the database');
         } else {
@@ -59,7 +61,7 @@ app.delete('/api/notes/:id', (req, res) => {
     });
 });
 
-
+// listens on port 3000
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`)
 })
