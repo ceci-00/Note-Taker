@@ -47,14 +47,18 @@ app.post('/api/notes', (req, res) => {
 //DELETE /api/notes/:id received query parameter containing id of note to delete
 app.delete('/api/notes/:id', (req, res) => {
     const deleteID = req.params.id;
-    //filter out the note with the id to delete
+    // Filter out the note with the id to delete
     dbData = dbData.filter(note => note.id !== deleteID);
-    //write the filtered notes to db.json
+    // Write the filtered notes to db.json
     fs.writeFile('./db/db.json', JSON.stringify(dbData), (err) => {
-        if (err) throw err;
-        res.json({ msg: "Note deleted" });
+        if (err) {
+            res.status(500).send('Failed to write to the database');
+        } else {
+            res.json({ msg: "Note deleted" });
+        }
     });
-})
+});
+
 
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`)
